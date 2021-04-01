@@ -1,0 +1,26 @@
+#!/usr/bin/perl -w
+use strict;
+use warnings;
+use autodie;
+
+my $args = "perl that prints perl";
+my $filename = 'script.txt';
+	unless(open FILE, '>'.$filename) { 
+		die "\nUnable to create $filename\n"; 
+} 
+close(FILE); 
+
+open my $FN,'>',"script.txt" or die "Could no open script.txt\n";
+print  $FN "#!/usr/bin/perl -w\n";
+if($args =~ m/\\/){ 
+	$args = $args =~ s/\\/\\\\/gr;
+}
+$args = $args =~ s/\"/\\\"/gr;
+print $FN "print \"$args\\n\"; ";
+close ($FN);
+
+open my $fh,'<',"script.txt" or die  "Could no open script.txt second\n"; 
+while(my $line = <$fh>){ 
+	print "$line"; 
+} 
+close($fh); 
